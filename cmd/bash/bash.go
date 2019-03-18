@@ -1,11 +1,15 @@
 package bash
 
 import (
+	"log"
 	"strings"
 
 	"github.com/joyciapp/joyci-core/cmd"
 	"github.com/joyciapp/joyci-core/docker"
 )
+
+const defaultImage = "golang:1.11"
+const defaultExecutable = "/bin/bash"
 
 // Bash struct
 type Bash struct {
@@ -16,7 +20,7 @@ type Bash struct {
 // New re
 func New() Bash {
 	b := Bash{}
-	b.container = &docker.Docker{Image: "golang:1.11", Executable: "/bin/bash"}
+	b.container = &docker.Docker{Image: defaultImage, Executable: defaultExecutable}
 	return b
 }
 
@@ -43,11 +47,16 @@ func (b Bash) Build() *Bash {
 	return &b
 }
 
-// ContainerArguments ahsahjsh
+// Execute execute a set of commandsr
+func (b Bash) Execute(commands ...string) (interface{}, error) {
+	return b.Commands(commands...).Run()
+}
+
+// ContainerArguments to run inside docker
 func (b Bash) ContainerArguments() []string {
 	commandsToExec := strings.Join(append(b.commands, "exit $?"), "; ")
 	container := b.container
-	workDir := container.WorkDir + "/" + "$(git rev-parse --short=7 HEAD)"
+	workDir := container.WorkDir
 
 	return []string{
 		"run", "--rm",
@@ -59,6 +68,9 @@ func (b Bash) ContainerArguments() []string {
 }
 
 // Run Bash Commmands
-func (b Bash) Run() {
-	cmd.ExecCommand("docker", b.ContainerArguments()...)
+func (b Bash) Run() (interface{}, error) {
+	arguments := b.ContainerArguments()
+	log.Println("cmd docker ", arguments)
+	result, err := cmd.ExecCommand("docker", arguments...)
+	return result, err
 }

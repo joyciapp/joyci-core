@@ -8,6 +8,8 @@ import (
 	"github.com/joyciapp/joyci-core/docker"
 )
 
+const defaultImage = "alpine/git:1.0.7"
+
 // Git struct
 type Git struct {
 	container *docker.Docker
@@ -17,7 +19,7 @@ type Git struct {
 // New git
 func New() Git {
 	g := Git{}
-	g.container = &docker.Docker{Image: "alpine/git:1.0.7"}
+	g.container = &docker.Docker{Image: defaultImage}
 	return g
 }
 

@@ -1,6 +1,8 @@
 package bash
 
 import (
+	"log"
+	"os"
 	"strings"
 	"testing"
 )
@@ -48,4 +50,18 @@ func TestContainerArguments(t *testing.T) {
 		t.Error("should be equal")
 	}
 
+}
+
+func TestExecute(t *testing.T) {
+	workDir := "/tmp/build/"
+	volumeDir, _ := os.Getwd()
+	bash := New().VolumeDir(volumeDir).WorkDir(workDir).Build()
+
+	result, err := bash.Execute("echo banana", "echo batata")
+
+	log.Println("result", result)
+
+	if err != nil {
+		t.Error("should not return error")
+	}
 }
