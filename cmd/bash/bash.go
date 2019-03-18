@@ -47,7 +47,7 @@ func (b Bash) Build() *Bash {
 func (b Bash) ContainerArguments() []string {
 	commandsToExec := strings.Join(append(b.commands, "exit $?"), "; ")
 	container := b.container
-	workDir := container.WorkDir
+	workDir := container.WorkDir + "/" + "$(git rev-parse --short=7 HEAD)"
 
 	return []string{
 		"run", "--rm",

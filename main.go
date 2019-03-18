@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	"github.com/joyciapp/joyci-core/cmd/bash"
@@ -9,25 +8,15 @@ import (
 )
 
 func main() {
-	pwd, _ := os.Getwd()
-	appName := "joyci-core"
+	volumeDir, _ := os.Getwd()
 	workDir := "/tmp/build/"
-	volumeDir := pwd + workDir
 
-	git := git.New().VolumeDir(volumeDir).Build()
+	git := git.New().VolumeDir(volumeDir + "/tmp/build/joyciapp").Build()
 	git.Clone("git@github.com:joyciapp/joyci-core.git")
 
-	bash := bash.New().VolumeDir(volumeDir+"/"+appName).WorkDir(workDir+"/"+appName).Commands(
+	bash := bash.New().VolumeDir(volumeDir).WorkDir(workDir).Commands(
 		"echo running the tests suite inside the container",
-		"go test ./...",
+		"go test ./... -v",
 	)
 	bash.Build().Run()
-
-	if _, err := os.Stat(volumeDir + "/" + appName); os.IsNotExist(err) {
-		log.Println("should clone a git repository")
-	}
-
-	// After
-	os.RemoveAll(volumeDir)
-
 }
