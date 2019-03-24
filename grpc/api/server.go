@@ -49,9 +49,10 @@ func Serve() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterJoyciCoreServer(s, &Server{})
+
+	log.Println("Joyci Core GRPC server started at ", port)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	log.Println("Joyci Core GRPC server started at ", port)
 }

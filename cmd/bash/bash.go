@@ -17,10 +17,22 @@ type Bash struct {
 	commands  []string
 }
 
-// New re
+// New starts Bash builder
 func New() Bash {
 	b := Bash{}
 	b.container = &docker.Docker{Image: defaultImage, Executable: defaultExecutable}
+	return b
+}
+
+// Image sets a image name to the Object
+func (b Bash) Image(imageName string) Bash {
+	b.container.Image = imageName
+	return b
+}
+
+// Executable sets an executable to run inside the container
+func (b Bash) Executable(executablePath string) Bash {
+	b.container.Executable = executablePath
 	return b
 }
 
@@ -33,6 +45,13 @@ func (b Bash) VolumeDir(volumeDir string) Bash {
 // WorkDir to run inside the container
 func (b Bash) WorkDir(workDir string) Bash {
 	b.container.WorkDir = workDir
+	return b
+}
+
+// VolumeAndWorkDir sets both attributes the same value
+func (b Bash) VolumeAndWorkDir(dir string) Bash {
+	b.container.VolumeDir = dir
+	b.container.WorkDir = dir
 	return b
 }
 
