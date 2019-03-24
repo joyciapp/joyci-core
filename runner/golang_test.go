@@ -6,7 +6,7 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	script, _ := ioutil.ReadFile("../examples/pipeline.go")
+	script, _ := ioutil.ReadFile("../examples/pipeline_go")
 
 	job := Job{
 		BuildPath: "/tmp/build",
