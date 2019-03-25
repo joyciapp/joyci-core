@@ -18,3 +18,11 @@ $ protoc -I grpc grpc/proto/core.proto --go_out=plugins=grpc:grpc
 
 ## Server
 *TODO*
+
+# Releases
+
+To release a new version:
+```
+$ git tag -a vx.x.x
+$ git push origin vx.x.x
+```
