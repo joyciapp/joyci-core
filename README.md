@@ -8,16 +8,17 @@ To run the test suite runs:
 $ go test ./... -v
 ```
 
-# GRPC
+# Docker
 
-## Protocol Buffers
-To compile protobuffers, in the project's root folder run the command bellow:
+## Build a new image
 ```
-$ protoc -I grpc grpc/proto/core.proto --go_out=plugins=grpc:grpc
+$ docker build -t joyciapp/joyci-core:0.0.1 .
 ```
 
-## Server
-*TODO*
+## Run the built image
+```
+$ docker run --rm -it joyciapp/joyci-core:0.0.1
+```
 
 # Releases
 
